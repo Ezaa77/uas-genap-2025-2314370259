@@ -20,9 +20,9 @@ class Article extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function comments()
+    public function likes()
     {
-        return $this->hasMany(\App\Models\Comment::class); // ⬅️ Tambahkan ini
+        return $this->hasMany(Like::class);
     }
 }
 

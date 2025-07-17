@@ -8,4 +8,4 @@ Route::get('/', function () {
 });
 Route::resource('articles', ArticleController::class);
 Route::resource('categories', CategoryController::class);
-Route::resource('comments', CommentController::class);
+Route::post('/articles/{id}/like', [ArticleController::class, 'like'])->name('articles.like');

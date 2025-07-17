@@ -1,29 +1,36 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Artikel</title>
-
-    <!-- Tailwind CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Tambahan CSS opsional -->
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-        }
-    </style>
+    <title>LibraryArticle</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-<body class="bg-gray-50 text-gray-800">
-    <nav class="bg-white shadow p-4 mb-6">
-        <div class="container mx-auto">
-            <a href="/" class="text-lg font-bold text-[#F53003]">MyArticleApp</a>
+<body class="bg-black text-white font-sans min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="bg-yellow-500 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="{{ url('/') }}" class="text-xl font-bold text-black hover:text-white transition">LibraryArticle</a>
+            <div class="space-x-4">
+                <a href="{{ route('articles.index') }}" class="text-black hover:text-white font-semibold transition">Beranda</a>
+                <a href="{{ route('articles.create') }}" class="text-black hover:text-white font-semibold transition">Tambah Artikel</a>
+            </div>
         </div>
     </nav>
 
-    <main class="container mx-auto px-4">
+    <!-- Main Content -->
+    <main class="py-8 px-4 sm:px-8">
         @yield('content')
     </main>
+
+    <!-- Footer -->
+    <footer class="bg-yellow-500 mt-12">
+        <div class="max-w-7xl mx-auto px-4 py-4 text-center text-black font-semibold">
+            &copy; {{ date('Y') }} LibraryArticle. All rights reserved.
+        </div>
+    </footer>
+
 </body>
 </html>

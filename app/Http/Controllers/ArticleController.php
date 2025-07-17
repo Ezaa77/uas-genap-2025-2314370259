@@ -9,43 +9,42 @@ use Illuminate\Support\Str;
 
 class ArticleController extends Controller
 {
-    public function index()
+   public function index()
     {
-        $articles = Article::with(['category', 'comments'])->get();
-        return view('articles.index', compact('articles'));
+    $articles = Article::with('category', 'likes')->get();
+
+    return view('articles.index', compact('articles'));
     }
 
-
+   
     public function store(Request $request)
-{
+    {
     $request->validate([
-        'title' => 'required|string|max:255',
-        'content' => 'required|string',
-        'category_id' => 'required|exists:categories,id',
-        'is_publish' => 'required|boolean',
-    ]);
+    'title' => 'required|string|max:255',
+    'content' => 'required',
+    'slug' => 'nullable|string|max:255',
+    'category_id' => 'required|exists:categories,id',
+    'is_publish' => 'nullable|boolean',
+]);
+
 
     Article::create([
-        'title' => $request->title,
-        'content' => $request->content,
-        'slug' => Str::slug($request->title) . '-' . time(), // ⬅️ BARIS PENTING INI!
-        'category_id' => $request->category_id,
-        'is_publish' => $request->is_publish,
-        'published_at' => $request->is_publish ? now() : null,
-    ]);
-
+    'title' => $request->title,
+    'content' => $request->content,
+    'slug' => Str::slug($request->title),
+    'category_id' => $request->category_id,
+    'is_publish' => $request->has('is_publish'), // TRUE kalau dicentang, FALSE kalau tidak
+    'published_at' => $request->has('is_publish') ? now() : null,
+]);
+    
     return redirect()->route('articles.index')->with('success', 'Artikel berhasil disimpan!');
 
-    if ($request->filled('comment')) {
-    $article->comments()->create([
-        'content' => $request->comment
-    ]);
-}
+  
 }
 
     public function create()
-    {
-    $categories = Category::all(); // Ambil semua kategori untuk ditampilkan di form
+    {   
+    $categories = Category::all(); // Mengambil semua data kategori
     return view('articles.create', compact('categories'));
     }
 
@@ -54,4 +53,12 @@ class ArticleController extends Controller
     $categories = \App\Models\Category::all();
     return view('articles.edit', compact('article', 'categories'));
     }
+
+    public function like($id)
+    {
+    $article = Article::findOrFail($id);
+    $article->likes()->create();
+    return back()->with('success', 'Berhasil menyukai artikel.');
+    }
+
 }
